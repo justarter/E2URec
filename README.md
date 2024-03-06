@@ -8,11 +8,24 @@ This is the pytorch implementation of ***E2URec*** proposed in the paper Towards
 pip install -r requirments.txt
 ~~~
 
+## Data preprocess
+Scripts for data preprocessing are included in data_preprocess.
+First, use ml-1m.ipynb to preprocess MovieLens-1M.
+Then, convert data into text
+~~~python
+python data2json.py --K 10 --temp_type simple --set train --dataset ml-1m
+python data2json.py --K 10 --temp_type simple --set valid --dataset ml-1m
+python data2json.py --K 10 --temp_type simple --set test --dataset ml-1m
+~~~
+Finally, use split_ml-1m.ipynb to split train/valid/test, retained/forgotten data.
+
 ## How to run E2URec
 Our method `E2URec` can be trained by
 ~~~python
 sh train_e2urec.sh
 ~~~
+
+
 
 ## How to run baselines
 We also provide shell scripts for baselines.
