@@ -1,6 +1,6 @@
 # Towards Efficient and Effective Unlearning of Large Language Models for Recommendation
 ## Introduction
-This is the pytorch implementation of ***E2URec*** proposed in the paper Towards Efficient and Effective Unlearning of Large Language Models for Recommendation.
+This is the pytorch implementation of ***E2URec*** proposed in the paper [Towards Efficient and Effective Unlearning of Large Language Models for Recommendation](http://arxiv.org/abs/2403.03536).
 
 
 ## Requirements
