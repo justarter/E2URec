@@ -14,14 +14,14 @@ parser.add_argument("--set", type=str, default="test", help="train/valid/test")
 args = parser.parse_args()
 print(args)
 
-DATA_DIR = f"./data/{args.dataset}/proc_data"
+DATA_DIR = f"../data/{args.dataset}/proc_data"
 
 assert args.temp_type in ["simple", "sequential", "high", "low"]
-assert args.set in ["train", "test"]
+assert args.set in ["train", "valid", "test"]
 
 fp = os.path.join(DATA_DIR, "data")
 os.makedirs(fp, exist_ok=True)
-fp = os.path.join(fp, args.set)
+fp = os.path.join(fp, 'rella_' + args.set)
 os.makedirs(fp, exist_ok=True)
 file_name = '_'.join([args.set, str(args.K), args.temp_type])
 fp = os.path.join(fp, file_name+'.json')

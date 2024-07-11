@@ -7,11 +7,11 @@ import numpy as np
 input_dict = {
     "User ID": None,
     "Movie ID": None,
-    "user_hist": None,
+    "history ID": None,
     "Gender": None,
     "Age": None,
     "Job": None,
-    "hist_rating": None,
+    "history rating": None,
 }
 
 
@@ -33,7 +33,7 @@ def get_template(input_dict, temp_type="simple"):
 f"The user is a {input_dict['Gender']}. "
 f"{objective} job is {input_dict['Job']}. {objective} age is {input_dict['Age']}.\n"
 f"{nominative.capitalize()} watched the following movies in order in the past, and rated them:\n"
-f"{list(map(lambda x: f'{x[0]}. {x[1]}', enumerate(input_dict['user_hist'])))}\n"
+f"{list(map(lambda x: f'{x[0]}. {x[1]}', enumerate(input_dict['history ID'])))}\n"
 f"Based on the movies {nominative} has watched, deduce if {nominative} will like the movie ***{input_dict['Movie ID']}***.\n"
 f"Note that more stars the user rated the movie, the user liked the movie more.\n"
 f"You should ONLY tell me yes or no.",
@@ -43,7 +43,7 @@ f"You should ONLY tell me yes or no.",
 f"The user is a {input_dict['Gender']}. "
 f"{objective} job is {input_dict['Job']}. {objective} age is {input_dict['Age']}.\n"
 f"{nominative.capitalize()} watched the following movies in order in the past, and rated them:\n"
-f"{list(map(lambda x: f'{x[0]}. {x[1]}', enumerate(input_dict['user_hist'][::-1])))}\n"
+f"{list(map(lambda x: f'{x[0]}. {x[1]}', enumerate(input_dict['history ID'][::-1])))}\n"
 f"Based on the movies {nominative} has watched, deduce if {nominative} will like the movie ***{input_dict['Movie ID']}***.\n"
 f"Note that more stars the user rated the movie, the more the user liked the movie.\n"
 f"You should ONLY tell me yes or no.",
@@ -52,7 +52,7 @@ f"You should ONLY tell me yes or no.",
 f"The user is a {input_dict['Gender']}. "
 f"{objective} job is {input_dict['Job']}. {objective} age is {input_dict['Age']}.\n"
 f"{nominative.capitalize()} watched the following movies in order in the past, and rated them:\n"
-f"{list(map(lambda x: f'{x[0]}. {x[1]}', enumerate(input_dict['user_hist'][::-1])))}\n"
+f"{list(map(lambda x: f'{x[0]}. {x[1]}', enumerate(input_dict['history ID'][::-1])))}\n"
 f"Based on the movies {nominative} has watched, deduce if {nominative} will like the movie ***{input_dict['Movie ID']}***.\n"
 f"Note that more stars the user rated the movie, the more the user liked the movie.\n"
 f"You should ONLY tell me yes or no.",
@@ -61,7 +61,7 @@ f"You should ONLY tell me yes or no.",
 f"The user is a {input_dict['Gender']}. "
 f"{objective} job is {input_dict['Job']}. {objective} age is {input_dict['Age']}.\n"
 f"{nominative.capitalize()} watched the following movies in order in the past, and rated them:\n"
-f"{list(map(lambda x: f'{x[0]}. {x[1]}', enumerate(input_dict['user_hist'][::])))}\n"
+f"{list(map(lambda x: f'{x[0]}. {x[1]}', enumerate(input_dict['history ID'][::])))}\n"
 f"Based on the movies {nominative} has watched, deduce if {nominative} will like the movie ***{input_dict['Movie ID']}***.\n"
 f"Note that more stars the user rated the movie, the more the user liked the movie.\n"
 f"You should ONLY tell me yes or no.",
@@ -71,7 +71,7 @@ f"You should ONLY tell me yes or no.",
 f"The user is a {input_dict['Gender']}. "
 f"{objective} job is {input_dict['Job']}. {objective} age is {input_dict['Age']}.\n"
 f"{nominative.capitalize()} watched the following movies in order in the past, and rated them:\n"
-+ "\n".join(input_dict["user_hist"]) + "\n" + \
++ "\n".join(input_dict["history ID"]) + "\n" + \
 f"Based on the movies {nominative} has watched, deduce if {nominative} will like the movie ***{input_dict['Movie ID']}***.\n"
 f"Note that more stars the user rated the movie, the user like the movie more.\n"
 f"You should ONLY tell me yes or no.",
@@ -83,7 +83,7 @@ f"""You are a movie recommender system. Your task is to infer the user preferenc
 <User Profile>: The user is a {input_dict['Gender']}. {objective} job is {input_dict['Job']}. {objective} age is {input_dict['Age']}.
 
 <Rating History>: {nominative.capitalize()} has watched the following movies in order in the past, and rated them as follows (note that the higher the rating given by the user, the more the user likes the movie):
-{input_dict['user_hist']}
+{input_dict['history ID']}
 
 <Target Movie>: {input_dict['Movie ID']}.
 
@@ -99,7 +99,7 @@ f"""You are a movie recommender system. Your task is to infer the user preferenc
 
 <Rating History>: The user's rating hisotry is shown below, where each row represents a rating record consisting of a movie name and a rating value. Note that the higher the rating given by the user, the more the user likes the movie.
 """
-+ "\n".join(input_dict["user_hist"]) + "\n" + \
++ "\n".join(input_dict["history ID"]) + "\n" + \
 f"""
 <Target Movie>: {input_dict['Movie ID']}.
 
@@ -128,6 +128,7 @@ def zero_shot_get_prompt(
 
     # fill the template
     for index in trange((len(df))):
+        # print(index)
         cur_temp = row_to_prompt(index, df, K, id_to_title, temp_type)
         yield cur_temp
 
@@ -193,19 +194,19 @@ def zero_shot_ret_get_prompt(
 def row_to_prompt(index, df, K, id_to_title, temp_type="simple"):
     global input_dict, template
     row = df.loc[index].to_dict()
-
+    # print(row.keys())
     for key in input_dict:
         assert key in row.keys(), "Key name error."
         input_dict[key] = row[key]
 
     # convert user_hist from id to name
-    input_dict["Movie ID"] = id_to_title[input_dict["Movie ID"]]
-    input_dict["user_hist"] = list(map(lambda x: id_to_title[x], input_dict["user_hist"]))
+    input_dict["Movie ID"] = id_to_title[str(input_dict["Movie ID"])]
+    input_dict["history ID"] = list(map(lambda x: id_to_title[str(x)], input_dict["history ID"]))
 
-    input_dict["user_hist"] = input_dict["user_hist"][-K:]
-    input_dict["hist_rating"] = input_dict["hist_rating"][-K:]
-    for i, (name, star) in enumerate(zip(input_dict["user_hist"], input_dict["hist_rating"])):
+    input_dict["history ID"] = input_dict["history ID"][-K:]
+    input_dict["history rating"] = input_dict["history rating"][-K:]
+    for i, (name, star) in enumerate(zip(input_dict["history ID"], input_dict["history rating"])):
         suffix = " stars)" if star > 1 else " star)"
-        input_dict["user_hist"][i] = f"{name} ({star}" + suffix
+        input_dict["history ID"][i] = f"{name} ({star}" + suffix
 
     return get_template(input_dict, temp_type)
