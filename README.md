@@ -5,12 +5,14 @@ This is the pytorch implementation of ***E2URec*** proposed in the paper [Toward
 
 ## Requirements
 ~~~python
-pip install -r requirments.txt
+pip install -r requirements.txt
 ~~~
 
 ## Data preprocess
 Scripts for data preprocessing are included in data_preprocess.
+
 First, use ml-1m.ipynb to preprocess MovieLens-1M.
+
 Then, convert data into text
 ~~~python
 python data2json.py --K 10 --temp_type simple --set train --dataset ml-1m
